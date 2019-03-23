@@ -1,16 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:cxf="http://cxf.apache.org/core" xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xmlns:test="http://apache.org/hello_world_soap_http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core" 
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
-http://cxf.apache.org/core
-http://cxf.apache.org/schemas/core.xsd
-http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://cxf.apache.org/jaxws
-http://cxf.apache.org/schemas/jaxws.xsd
-http://www.springframework.org/schema/util
-http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+		http://cxf.apache.org/core
+		http://cxf.apache.org/schemas/core.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-2.0.xsd
+		">
 
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
 
@@ -31,8 +34,7 @@ http://www.springframework.org/schema/util/spring-util-2.0.xsd">
     </bean>
 
     <util:list id="wspAllowedEndpoints">
-        <value>https://localhost:8443/TFG_server/services/helloworld.*</value>
-        <value>https://localhost:8443/TFG_server/services/holamundo.*</value>
+        <value>.*</value>
     </util:list>
 
     <bean id="mySTSProperties" class="org.apache.cxf.sts.StaticSTSProperties">
@@ -40,7 +42,7 @@ http://www.springframework.org/schema/util/spring-util-2.0.xsd">
         <property name="signatureUsername" value="mystskey" />
         <property name="callbackHandlerClass" value="sts.PasswordCallbackHandler" />
         <property name="encryptionPropertiesFile" value="stsKeystore.properties" />
-        <property name="issuer" value="DoubleItSTSIssuer" />
+        <property name="issuer" value="STSIssuer" />
         <property name="encryptionUsername" value="myservicekey"/>
     </bean>
 
@@ -52,9 +54,6 @@ http://www.springframework.org/schema/util/spring-util-2.0.xsd">
             <entry key="ws-security.callback-handler" value="sts.PasswordCallbackHandler" />
             <entry key="ws-security.signature.properties" value="stsKeystore.properties" />
             <entry key="ws-security.signature.username" value="mystskey" />
-            <!-- Below used w/X.509 to allow server to connect with any client whose key is in STS' truststore-->
-            <!-- Unneeded if using UT authentication between WSC and STS -->
-            <!--entry key="ws-security.encryption.username" value="useReqSigCert" /-->
         </jaxws:properties>
     </jaxws:endpoint>
 
